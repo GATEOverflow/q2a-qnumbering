@@ -5,8 +5,14 @@ class qa_html_theme_layer extends qa_html_theme_base {
 	function head_custom()
 	{
 		qa_html_theme_base::head_custom();
-		if(qa_opt('qnumbering_plugin_enable'))
+		if(qa_opt('qnumbering_plugin_enable')){
+		//	if(!defined ('DONUT_THEME_BASE_DIR')){
+
+		//		$this->output('<script async src="https://use.fontawesome.com/422af95f45.js"></script>');
+
+		//	}
 			$this->output('<style type="text/css">'.qa_opt('qnumbering_plugin_css').'</style>');			
+		}
 	}
 
 
@@ -46,7 +52,23 @@ class qa_html_theme_layer extends qa_html_theme_base {
 
 		$this->output('</div>');
 	}
+	function post_meta( $post, $class, $prefix = null, $separator = '<br/>' )
+	{
+		qa_html_theme_base::post_meta($post, $class, $prefix, $separator);
+		if(!defined ('DONUT_THEME_BASE_DIR'))
+			$this->view_count_numbering($post);
+	}
+	function view_count_numbering($post)
+	{
+		if ( !empty( $post['views'] ) ) {
+			$this->output( '<span class="qa-q-item-meta">' );
+			if(defined ('DONUT_THEME_BASE_DIR'))
+				$this->output( ' | <i class="fa fa-eye"></i>' );
+			$this->output_split( @$post['views'], 'q-item-view' );
+			$this->output( '</span>' );
+		}
 
+	}
 
 }
 
