@@ -19,7 +19,11 @@ class qa_html_theme_layer extends qa_html_theme_base {
 	public function q_list_items($q_items)
 	{
 		if(qa_opt('qnumbering_plugin_enable')) {
-			$i=0;
+			if (isset($_GET['start'])) {
+				$i = $_GET['start'];
+			} else {
+				$i = 0;
+		   	}
 			foreach ($q_items as $q_item){
 				$this->q_list_item1($q_item, $i++);
 			}
