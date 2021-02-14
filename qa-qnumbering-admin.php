@@ -63,6 +63,7 @@ class qa_qnumbering_admin {
 
 
 		$fields[] = array(
+				'rows' => 8,
 				'label' => 'QNumbering CSS',
 				'type' => 'textarea',
 				'value' => qa_opt('qnumbering_plugin_css'),
