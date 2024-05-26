@@ -51,16 +51,6 @@ class qa_qnumbering_admin {
 
 		$fields = array();
 
-		$fields[] = array(
-				'label' => 'Enable question numbering',
-				'tags' => 'NAME="qnumbering_plugin_enable"',
-				'value' => qa_opt('qnumbering_plugin_enable'),
-				'type' => 'checkbox',
-				);
-
-
-
-
 
 		$fields[] = array(
 				'rows' => 8,

@@ -18,7 +18,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 
 	public function q_list_items($q_items)
 	{
-		if(qa_opt('qnumbering_plugin_enable')) {
+		if($this-> template == "questions") {
 			if (isset($_GET['start'])) {
 				$i = $_GET['start'];
 			} else {
