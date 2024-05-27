@@ -63,7 +63,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 			if (qa_opt('qnumbering_native_tooltip')) {
 				$this->output('
 					<div class="qa-question-list-count">
-						<span class="q-number-data" title="'.qa_opt('qnumbering_plugin_tooltip').' '.$qNumber.'">'.$qNumber.'</span>
+						<span class="q-number-data" title="'.qa_opt('qnumbering_plugin_tooltip').' '.$qNumber.'">#'.$qNumber.'</span>
 					</div>
 				');
 			} else {
