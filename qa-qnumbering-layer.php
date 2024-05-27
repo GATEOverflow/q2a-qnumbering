@@ -29,10 +29,12 @@ class qa_html_theme_layer extends qa_html_theme_base {
 	{
 		// Don't know if this if statement is necessary, 
 		// but will leave it here since you've added this yersterday.
-		if($this-> template == 'questions') {
+		if($this-> template == 'questions') 
+		{
 		
 			if (isset($_GET['start'])) {
-				$i = $_GET['start'];
+				$this -> qNumber = $_GET['start'] + 1;
+				$i = $_GET['start'] + 2;
 			} else {
 				$i = 2;
 			}
@@ -53,14 +55,15 @@ class qa_html_theme_layer extends qa_html_theme_base {
 	{
 		// Don't know if this if statement is necessary, 
 		// but will leave it here since you've added this yersterday.
-		if($this-> template == 'questions') {
+		if($this-> template == 'questions') 
+		{
 			// Get question number
 			$qNumber = $this->qNumber;
 			
 			if (qa_opt('qnumbering_native_tooltip')) {
 				$this->output('
 					<div class="qa-question-list-count">
-						<span class="q-number-data" title="'.qa_opt('qnumbering_plugin_tooltip').' '.$qNumber.'">#'.$qNumber.'</span>
+						<span class="q-number-data" title="'.qa_opt('qnumbering_plugin_tooltip').' '.$qNumber.'">'.$qNumber.'</span>
 					</div>
 				');
 			} else {
