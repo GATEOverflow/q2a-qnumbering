@@ -1,0 +1,31 @@
+/* Q2A QNumbering */
+
+.qa-question-list-count {
+	color: inherit;
+	position: relative;
+	width: max-content;
+}
+.q-number-pad {
+	position: absolute;
+	z-index: 2;
+	-webkit-overflow-scrolling: touch;
+	transition: opacity .25s cubic-bezier(.4,0,.2,1);
+	will-change: opacity, visibility;
+	margin: 0 12px;
+	white-space: nowrap;
+	opacity: 0;
+	visibility: hidden;
+	background-color: rgb(0 0 0 / 90%);
+	color: #ffffff;
+	font-size: .75rem;
+	font-weight: initial;
+	padding: 4px 8px;
+	border-radius: 0.3rem;
+	pointer-events: none;
+	box-shadow: 0 1px 3px 0 rgb(60 64 67 / 30%), 0 4px 8px 3px rgb(60 64 67 / 15%);
+}
+.qa-question-list-count:hover .q-number-pad {
+    display: initial !important;
+	opacity: 1;
+    visibility: visible;
+}
