@@ -2,66 +2,92 @@
 
 class qa_html_theme_layer extends qa_html_theme_base {
 
-	function head_custom()
+	public function head_css()
 	{
-		qa_html_theme_base::head_custom();
-		if(qa_opt('qnumbering_plugin_enable')){
-		//	if(!defined ('DONUT_THEME_BASE_DIR')){
-
-		//		$this->output('<script async src="https://use.fontawesome.com/422af95f45.js"></script>');
-
-		//	}
-			$this->output('<style type="text/css">'.qa_opt('qnumbering_plugin_css').'</style>');			
-		}
+		qa_html_theme_base::head_css();
+		
+		/* DEPRECATED
+			if(qa_opt('qnumbering_plugin_enable')){
+			//	if(!defined ('DONUT_THEME_BASE_DIR')){
+			//		$this->output('<script async src="https://use.fontawesome.com/422af95f45.js"></script>');
+			//	}
+				$this->output('<style>'.qa_opt('qnumbering_plugin_css').'</style>');			
+			}
+		*/
+		
+		$this->output('
+			<link rel="preload" as="style" href="'.QA_HTML_THEME_LAYER_URLTOROOT.'css/qnumbering.min.css?v=1" onload="this.onload=null;this.rel=\'stylesheet\'">
+			<noscript><link rel="stylesheet" href="'.QA_HTML_THEME_LAYER_URLTOROOT.'css/qnumbering.min.css?v=1"></noscript>
+		');
 	}
-
-
+	
+	// Convert question counter to a variable instead of a function parameter,
+	// to prevent rewriting functions and preserve theme modifications.
+	protected $qNumber = 1;
+	
 	public function q_list_items($q_items)
 	{
-		if($this-> template == "questions") {
+		// Don't know if this if statement is necessary, 
+		// but will leave it here since you've added this yersterday.
+		if($this-> template == 'questions') {
+		
 			if (isset($_GET['start'])) {
 				$i = $_GET['start'];
 			} else {
-				$i = 0;
-		   	}
+				$i = 2;
+			}
+			
+			// Start normal q_list_items function
 			foreach ($q_items as $q_item){
-				$this->q_list_item1($q_item, $i++);
+				$this->q_list_item($q_item);
+				$this->qNumber = $i++; // ADD +1 to question Number
 			}
 		}
 		else {
 			qa_html_theme_base::q_list_items($q_items);
 		}
 	}
-	public function q_list_item1($q_item, $i)
+	
+	// Create a separate function to make it easier to move around
+	function q_number_output()
 	{
-
-		$this->output( '<div class="qa-q-list-item row' . rtrim( ' ' . @$q_item['classes'] ) . '" ' . @$q_item['tags'] . '>' );
-
-
-
-		$this->q_item_stats1($q_item, $i);
-		$this->q_item_main($q_item);
-		$this->q_item_clear();
-
-		$this->output('</div> <!-- END qa-q-list-item -->', '');
+		// Don't know if this if statement is necessary, 
+		// but will leave it here since you've added this yersterday.
+		if($this-> template == 'questions') {
+			// Get question number
+			$qNumber = $this->qNumber;
+			
+			if (qa_opt('qnumbering_native_tooltip')) {
+				$this->output('
+					<div class="qa-question-list-count">
+						<span class="q-number-data" title="'.qa_opt('qnumbering_plugin_tooltip').' '.$qNumber.'">#'.$qNumber.'</span>
+					</div>
+				');
+			} else {
+				$this->output('
+					<div class="qa-question-list-count">
+						<span class="q-number-data">#'.$qNumber.'</span>
+						<span class="q-number-pad" style="display:none;">'.qa_opt('qnumbering_plugin_tooltip').' '.$qNumber.'</span>
+					</div>
+				');
+			}
+		}
 	}
-	function q_item_stats1($q_item, $i)
+	
+	function q_item_stats($q_item)
 	{
-		$this->output('<div class="qa-q-item-stats">');
-
-		$this->voting($q_item);
-		$this->a_count($q_item);
-		$i++;
-		$this->output('<div class="qa-question-list-count">'.$i.'</div>');
-
-		$this->output('</div>');
+		// Output the qNumberCounter
+		$this->q_number_output();
+		qa_html_theme_base::q_item_stats($q_item);
 	}
-	function post_meta( $post, $class, $prefix = null, $separator = '<br/>' )
+	
+	function post_meta($post, $class, $prefix = null, $separator = '<br/>')
 	{
 		qa_html_theme_base::post_meta($post, $class, $prefix, $separator);
 		if(!defined ('DONUT_THEME_BASE_DIR'))
 			$this->view_count_numbering($post);
 	}
+	
 	function view_count_numbering($post)
 	{
 		if ( !empty( $post['views'] ) ) {
